@@ -43,6 +43,8 @@ export default class Animation {
   }
 
   start() {
+    this.onStartCallback();
+
     this.animationInProgress = true;
     this.progress = 0;
     time.start();
@@ -60,17 +62,18 @@ export default class Animation {
     time.update(highResTimestamp);
 
     this.progress += time.getDeltaTime() * (this.animationTime / 1000); // ms -> s
-
-    // clamp the progress between 0 and 1
-    if (this.progress >= 1) {
-      this.stop();
-      this.progress = 1;
-    }
+    this.progress = Math.min(this.progress, 1); // [0, 1]
 
     this.onUpdateCallback(this.easing.getValueForProgress(this.progress));
+
+    if (this.progress === 1) {
+      this.stop();
+    }
   }
 
   stop() {
     this.animationInProgress = false;
+
+    this.onStopCallback();
   }
 }
