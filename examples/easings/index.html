@@ -22,8 +22,8 @@
 
     var lastXValue = 0;
     var fullWidth = canvas.width;
-    linearAnimation.onUpdate(yValue => {
-      var currentXValue = fullWidth * yValue;
+    linearAnimation.onUpdate(interpolatedObject => {
+      var currentXValue = fullWidth * interpolatedObject.x;
 
       ctx.moveTo(lastXValue, fullWidth - lastXValue);
       ctx.lineTo(currentXValue, fullWidth - currentXValue);

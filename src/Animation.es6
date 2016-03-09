@@ -18,9 +18,7 @@ export default class Animation {
     this.easing = easing;
     this.animationTime = animationTime;
 
-    this.propsToAnimate = _.intersection(Object.keys(from), Object.keys(to))
-                            .filter(property => typeof from[property] === 'number' &&
-                                                typeof to[property] === 'number');
+    this.getObjectToInterpolate(from, to);
 
     // use the fixed method to avoid undefined checking
     this.onUpdateCallback = fixedMethod;
@@ -28,6 +26,17 @@ export default class Animation {
     this.onStopCallback = fixedMethod;
 
     this.update = this.update.bind(this);
+  }
+
+  getObjectToInterpolate(from, to) {
+    this.propsToAnimate = _.intersection(Object.keys(from), Object.keys(to))
+                            .filter(property => typeof from[property] === 'number' &&
+                                                typeof to[property] === 'number');
+
+    this.interpolationObject = {};
+    this.propsToAnimate.forEach(property => {
+      this.interpolationObject[property] = from[property];
+    });
   }
 
   onStart(callback) {
@@ -64,7 +73,12 @@ export default class Animation {
     this.progress += time.getDeltaTime() * (this.animationTime / 1000); // ms -> s
     this.progress = Math.min(this.progress, 1); // [0, 1]
 
-    this.onUpdateCallback(this.easing.getValueForProgress(this.progress));
+    // interpolate between props
+    this.propsToAnimate.forEach(property => {
+      this.interpolationObject[property] =
+        this.from[property] + (this.to[property] - this.from[property]) * this.progress;
+    });
+    this.onUpdateCallback(this.interpolationObject);
 
     if (this.progress === 1) {
       this.stop();
