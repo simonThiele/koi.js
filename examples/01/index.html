@@ -11,8 +11,14 @@
 <body>
   <script src="../../build/index.js"></script>
   <script>
-    var animation = new Animation();
-    console.log(animation);
+    var animation = new Animation({
+      from: {x: 1, y: 0},
+      to: {x: -1, y: 10}
+    });
+    animation.onStart(progress => console.log('start'));
+    animation.onUpdate(progress => console.log(progress));
+    animation.onStop(progress => console.log('stop'));
+    animation.start();
   </script>
 </body>
 </html>
