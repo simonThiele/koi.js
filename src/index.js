@@ -1,2 +1,1 @@
-// init
-require('./Animation.es6');
+require('./index.es6');
