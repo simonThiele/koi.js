@@ -18,14 +18,11 @@
     ctx.fillStyle = "#aaaaaa";
     ctx.fillRect(0, 0, 400, 400);
 
-    var animation = new Animation({
-      from: {x: 0},
-      to: {x: 1}
-    });
+    var linearAnimation = new Animation({ from: {x: 0}, to: {x: 1} });
 
     var lastXValue = 0;
     var fullWidth = canvas.width;
-    animation.onUpdate(yValue => {
+    linearAnimation.onUpdate(yValue => {
       var currentXValue = fullWidth * yValue;
 
       ctx.moveTo(lastXValue, fullWidth - lastXValue);
@@ -34,7 +31,7 @@
 
       lastXValue = currentXValue;
     });
-    animation.start();
+    linearAnimation.start();
   </script>
 </body>
 </html>
