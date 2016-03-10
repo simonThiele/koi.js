@@ -12,10 +12,12 @@ export default class Animation {
     from,
     to,
     animationTime = 1000,
+    repeating = 0,
     easing = new LinearEasing() }) {
     this.from = from;
     this.to = to;
     this.easing = easing;
+    this.repeating = repeating;
     this.animationTime = animationTime;
 
     this.getObjectToInterpolate(from, to);
@@ -55,6 +57,7 @@ export default class Animation {
     this.onStartCallback();
 
     this.animationInProgress = true;
+    this.numRepeatings = 0;
     this.progress = 0;
     time.start();
 
@@ -74,17 +77,29 @@ export default class Animation {
     this.progress = Math.min(this.progress, 1); // [0, 1]
 
     // interpolate between props
+    this.interpolateObject(this.progress);
+    this.onUpdateCallback(this.interpolationObject, this.progress);
+
+    if (this.progress === 1) {
+      if (this.numRepeatings >= this.repeating) {
+        this.stop();
+      } else {
+        this.progress = 0;
+        this.interpolateObject(0);
+        this.onUpdateCallback(this.interpolationObject, 0);
+      }
+      this.numRepeatings++;
+    }
+  }
+
+  interpolateObject(progress) {
+    // interpolate between props
     this.propsToAnimate.forEach(prop => {
       const from = this.from[prop];
       const to = this.to[prop];
       this.interpolationObject[prop] =
-        from + (to - from) * this.easing.getValueForProgress(this.progress);
+        from + (to - from) * this.easing.getValueForProgress(progress);
     });
-    this.onUpdateCallback(this.interpolationObject, this.progress);
-
-    if (this.progress === 1) {
-      this.stop();
-    }
   }
 
   stop() {

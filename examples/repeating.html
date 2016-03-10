@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head profile="http://www.w3.org/2005/10/profile">
+  <meta charset="UTF-8"
+        name="viewport"
+        content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="google" content="notranslate">
+
+  <title>simpleAnimation</title>
+</head>
+<body>
+  <script src="../build/index.js"></script>
+  <script>
+    var animation = new Animation({
+      from: {x: 0},
+      to: {x: 1},
+      repeating: 2
+    });
+    animation.onStart(progress => console.log('start'));
+    animation.onUpdate(progress => console.log(progress));
+    animation.onStop(progress => console.log('stop'));
+    animation.start();
+  </script>
+</body>
+</html>
