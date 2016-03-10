@@ -70,15 +70,17 @@ export default class Animation {
 
     time.update(highResTimestamp);
 
-    this.progress += time.getDeltaTime() * (this.animationTime / 1000); // ms -> s
+    this.progress += time.getDeltaTime() * (1000 / this.animationTime); // ms -> s
     this.progress = Math.min(this.progress, 1); // [0, 1]
 
     // interpolate between props
-    this.propsToAnimate.forEach(property => {
-      this.interpolationObject[property] =
-        this.from[property] + (this.to[property] - this.from[property]) * this.progress;
+    this.propsToAnimate.forEach(prop => {
+      const from = this.from[prop];
+      const to = this.to[prop];
+      this.interpolationObject[prop] =
+        from + (to - from) * this.easing.getValueForProgress(this.progress);
     });
-    this.onUpdateCallback(this.interpolationObject);
+    this.onUpdateCallback(this.interpolationObject, this.progress);
 
     if (this.progress === 1) {
       this.stop();

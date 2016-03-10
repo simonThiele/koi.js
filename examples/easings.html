@@ -17,21 +17,39 @@
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "#aaaaaa";
     ctx.fillRect(0, 0, 400, 400);
+    setupAnimation(new LinearEasing());
+    setupAnimation(new QuadraticEasing('in'));
+    setupAnimation(new QuadraticEasing('out'));
+    setupAnimation(new QuadraticEasing('inOut'));
+    setupAnimation(new CubicEasing('in'));
+    setupAnimation(new CubicEasing('out'));
+    setupAnimation(new CubicEasing('inOut'));
 
-    var linearAnimation = new Animation({ from: {x: 0}, to: {x: 1} });
+    function setupAnimation(easing) {
+      var animation = new Animation({
+        from: {x: 0},
+        to: {x: 1},
+        easing: easing,
+        animationTime: 500 });
 
-    var lastXValue = 0;
-    var fullWidth = canvas.width;
-    linearAnimation.onUpdate(interpolatedObject => {
-      var currentXValue = fullWidth * interpolatedObject.x;
+      var lastX = 0;
+      var lastY = 0;
+      var fullWidth = canvas.width;
+      var fullHeight = canvas.height;
+      animation.onUpdate((interpolatedObject, progress) => {
+        var currentX = fullWidth * progress;
+        var currentY = fullHeight * interpolatedObject.x;
 
-      ctx.moveTo(lastXValue, fullWidth - lastXValue);
-      ctx.lineTo(currentXValue, fullWidth - currentXValue);
-      ctx.stroke();
+        ctx.moveTo(lastX, fullHeight - lastY);
+        ctx.lineTo(currentX, fullWidth - currentY);
+        ctx.stroke();
 
-      lastXValue = currentXValue;
-    });
-    linearAnimation.start();
+        lastX = currentX;
+        lastY = currentY;
+      });
+
+      animation.start();
+    }
   </script>
 </body>
 </html>
