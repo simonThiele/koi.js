@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import LinearEasing from './easings/Linear.es6';
-import * as time from './time.es6';
+import Time from './Time.es6';
 
 
 const fixedMethod = () => {};
@@ -19,6 +19,7 @@ export default class Animation {
     this.easing = easing;
     this.repeating = repeating;
     this.animationTime = animationTime;
+    this.time = new Time();
 
     this.getObjectToInterpolate(from, to);
 
@@ -59,7 +60,7 @@ export default class Animation {
     this.animationInProgress = true;
     this.numRepeatings = 0;
     this.progress = 0;
-    time.start();
+    this.time.start();
 
     this.update(0);
   }
@@ -71,9 +72,9 @@ export default class Animation {
 
     requestAnimationFrame(this.update);
 
-    time.update(highResTimestamp);
+    this.time.update(highResTimestamp);
 
-    this.progress += time.getDeltaTime() * (1000 / this.animationTime); // ms -> s
+    this.progress += this.time.getDeltaTime() * (1000 / this.animationTime); // ms -> s
     this.progress = Math.min(this.progress, 1); // [0, 1]
 
     // interpolate between props

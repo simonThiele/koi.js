@@ -1,19 +1,24 @@
-let timeOfLastFrameUpdate = 0;
-let deltaTime = 0;
-let timeNow = 0;
+export default class Time {
 
-export function start() {
-  timeNow = Date.now();
-}
+  constructor() {
+    this.timeOfLastFrameUpdate = 0;
+    this.deltaTime = 0;
+    this.timeNow = 0;
+  }
 
-export function update(highResTimestamp) {
-  timeNow = highResTimestamp;
-  const deltaTimeInMs = (timeNow - timeOfLastFrameUpdate);
-  deltaTime = deltaTimeInMs / 1000; // in ms
+  start() {
+    this.timeNow = Date.now();
+  }
 
-  timeOfLastFrameUpdate = timeNow;
-}
+  update(highResTimestamp) {
+    this.timeNow = highResTimestamp;
+    const deltaTimeInMs = (highResTimestamp - this.timeOfLastFrameUpdate);
+    this.deltaTime = deltaTimeInMs / 1000; // in ms
 
-export function getDeltaTime() {
-  return deltaTime;
+    this.timeOfLastFrameUpdate = highResTimestamp;
+  }
+
+  getDeltaTime() {
+    return this.deltaTime;
+  }
 }
