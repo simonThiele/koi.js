@@ -3,7 +3,6 @@ import intersection from 'lodash/intersection';
 import LinearEasing from './easings/Linear.es6';
 import Time from './Time.es6';
 
-
 const fixedMethod = () => {};
 
 export default class Animation {
@@ -13,7 +12,7 @@ export default class Animation {
     to,
     animationTime = 1000,
     repeating = 0,
-    easing = new LinearEasing() }) {
+    easing = new LinearEasing()}) {
     this.from = from;
     this.to = to;
     this.easing = easing;
@@ -69,8 +68,6 @@ export default class Animation {
     if (!this.animationInProgress) {
       return;
     }
-
-    requestAnimationFrame(this.update);
 
     this.time.update(highResTimestamp);
 
