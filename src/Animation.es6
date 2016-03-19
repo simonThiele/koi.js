@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import intersection from 'lodash/intersection';
 
 import LinearEasing from './easings/Linear.es6';
 import Time from './Time.es6';
@@ -32,7 +32,7 @@ export default class Animation {
   }
 
   getObjectToInterpolate(from, to) {
-    this.propsToAnimate = _.intersection(Object.keys(from), Object.keys(to))
+    this.propsToAnimate = intersection(Object.keys(from), Object.keys(to))
                             .filter(property => typeof from[property] === 'number' &&
                                                 typeof to[property] === 'number');
 
