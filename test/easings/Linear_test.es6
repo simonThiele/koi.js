@@ -1,7 +1,7 @@
 /* eslint-env mocha, node */
 import {expect} from 'chai';
 
-import LinearEasing from './Linear.es6';
+import LinearEasing from '../../src/easings/Linear.es6';
 
 describe('easings', () => {
   beforeEach(() => {
