@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import _Animation from './Animation.es6';
 import _CubicEasing from './easings/Cubic.es6';
 import _LinearEasing from './easings/Linear.es6';

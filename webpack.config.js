@@ -11,10 +11,7 @@ module.exports = {
     publicPath: 'build/',
     filename: 'index.js',
     chunkFilename: '[id].[hash].js',
-
-    // export itself to a global var
-    libraryTarget: "var",
-    // name of the global var: "Foo"
+    libraryTarget: "umd",
     library: "koi"
   },
   module: {
