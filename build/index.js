@@ -61,31 +61,51 @@
 
 	'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /* eslint-disable no-undef */
+
 	var _Animation = __webpack_require__(3);
 
 	var _Animation2 = _interopRequireDefault(_Animation);
 
-	var _Linear = __webpack_require__(54);
+	var _Linear = __webpack_require__(57);
 
 	var _Linear2 = _interopRequireDefault(_Linear);
 
-	var _Cubic = __webpack_require__(56);
+	var _Cubic = __webpack_require__(58);
 
 	var _Cubic2 = _interopRequireDefault(_Cubic);
 
-	var _Quadratic = __webpack_require__(57);
+	var _Quadratic = __webpack_require__(59);
 
 	var _Quadratic2 = _interopRequireDefault(_Quadratic);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	window.Animation = _Animation2.default;
+	registerModule('Animation', _Animation2.default);
 
-	window.LinearEasing = _Linear2.default;
+	registerModule('LinearEasing', _Linear2.default);
 
-	window.CubicEasing = _Cubic2.default;
+	registerModule('CubicEasing', _Cubic2.default);
 
-	window.QuadraticEasing = _Quadratic2.default;
+	registerModule('QuadraticEasing', _Quadratic2.default);
+
+	/**
+	 * @param {string} modulename the name to access the property
+	 * @param {object} module the module to be registered
+	 * @description makes the module usable in different environments (node, browser)
+	 */
+	function registerModule(modulename, module) {
+	  var undef = 'undefined';
+
+	  if (( false ? 'undefined' : _typeof(exports)) !== undef && (typeof module === 'undefined' ? 'undefined' : _typeof(module)) !== undef) {
+	    module.exports = module;
+	  } else if (root !== undefined) {
+	    // Global variable
+	    root[modulename] = module;
+	  }if (window !== undefined) {
+	    window[modulename] = module;
+	  }
+	}
 
 /***/ },
 /* 3 */
@@ -103,13 +123,17 @@
 
 	var _intersection2 = _interopRequireDefault(_intersection);
 
-	var _Linear = __webpack_require__(54);
+	var _RequestAnimationFrameUpdater = __webpack_require__(54);
+
+	var _RequestAnimationFrameUpdater2 = _interopRequireDefault(_RequestAnimationFrameUpdater);
+
+	var _ManualUpdater = __webpack_require__(56);
+
+	var _ManualUpdater2 = _interopRequireDefault(_ManualUpdater);
+
+	var _Linear = __webpack_require__(57);
 
 	var _Linear2 = _interopRequireDefault(_Linear);
-
-	var _Time = __webpack_require__(55);
-
-	var _Time2 = _interopRequireDefault(_Time);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -125,6 +149,8 @@
 	    var animationTime = _ref$animationTime === undefined ? 1000 : _ref$animationTime;
 	    var _ref$repeating = _ref.repeating;
 	    var repeating = _ref$repeating === undefined ? 0 : _ref$repeating;
+	    var _ref$autoUpdate = _ref.autoUpdate;
+	    var autoUpdate = _ref$autoUpdate === undefined ? true : _ref$autoUpdate;
 	    var _ref$easing = _ref.easing;
 	    var easing = _ref$easing === undefined ? new _Linear2.default() : _ref$easing;
 
@@ -135,7 +161,7 @@
 	    this.easing = easing;
 	    this.repeating = repeating;
 	    this.animationTime = animationTime;
-	    this.time = new _Time2.default();
+	    this.updater = autoUpdate ? new _RequestAnimationFrameUpdater2.default(this) : new _ManualUpdater2.default(this);
 
 	    this.getObjectToInterpolate(from, to);
 
@@ -184,22 +210,16 @@
 	      this.animationInProgress = true;
 	      this.numRepeatings = 0;
 	      this.progress = 0;
-	      this.time.start();
-
-	      this.update(0);
+	      this.updater.start();
 	    }
 	  }, {
 	    key: 'update',
-	    value: function update(highResTimestamp) {
+	    value: function update(deltaTime) {
 	      if (!this.animationInProgress) {
 	        return;
 	      }
 
-	      requestAnimationFrame(this.update);
-
-	      this.time.update(highResTimestamp);
-
-	      this.progress += this.time.getDeltaTime() * (1000 / this.animationTime); // ms -> s
+	      this.progress += deltaTime / 1000 * (1000 / this.animationTime); // ms -> s
 	      this.progress = Math.min(this.progress, 1); // [0, 1]
 
 	      // interpolate between props
@@ -1837,9 +1857,9 @@
 
 /***/ },
 /* 54 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1847,24 +1867,49 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _Time = __webpack_require__(55);
+
+	var _Time2 = _interopRequireDefault(_Time);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var LinearEasing = function () {
-	  function LinearEasing() {
-	    _classCallCheck(this, LinearEasing);
+	var RequestAnimationFrameUpdater = function () {
+	  function RequestAnimationFrameUpdater(animation) {
+	    _classCallCheck(this, RequestAnimationFrameUpdater);
+
+	    this.animation = animation;
+	    this.time = new _Time2.default();
+
+	    this.update = this.update.bind(this);
 	  }
 
-	  _createClass(LinearEasing, [{
-	    key: "getValueForProgress",
-	    value: function getValueForProgress(progress) {
-	      return progress;
+	  _createClass(RequestAnimationFrameUpdater, [{
+	    key: 'start',
+	    value: function start() {
+	      this.time.start();
+	      this.update(0);
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update(highResTimestamp) {
+	      if (!this.animation.animationInProgress) {
+	        return;
+	      }
+
+	      /* eslint-disable no-undef */
+	      requestAnimationFrame(this.update);
+
+	      this.time.update(highResTimestamp);
+	      this.animation.update(this.time.getDeltaTime());
 	    }
 	  }]);
 
-	  return LinearEasing;
+	  return RequestAnimationFrameUpdater;
 	}();
 
-	exports.default = LinearEasing;
+	exports.default = RequestAnimationFrameUpdater;
 
 /***/ },
 /* 55 */
@@ -1899,7 +1944,7 @@
 	    value: function update(highResTimestamp) {
 	      this.timeNow = highResTimestamp;
 	      var deltaTimeInMs = highResTimestamp - this.timeOfLastFrameUpdate;
-	      this.deltaTime = deltaTimeInMs / 1000; // in ms
+	      this.deltaTime = deltaTimeInMs;
 
 	      this.timeOfLastFrameUpdate = highResTimestamp;
 	    }
@@ -1917,6 +1962,73 @@
 
 /***/ },
 /* 56 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ManualUpdater = function () {
+	  function ManualUpdater(animation) {
+	    _classCallCheck(this, ManualUpdater);
+
+	    this.animation = animation;
+	  }
+
+	  _createClass(ManualUpdater, [{
+	    key: "start",
+	    value: function start() {}
+	  }, {
+	    key: "update",
+	    value: function update(deltaTime) {
+	      this.animation.update(deltaTime);
+	    }
+	  }]);
+
+	  return ManualUpdater;
+	}();
+
+	exports.default = ManualUpdater;
+
+/***/ },
+/* 57 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var LinearEasing = function () {
+	  function LinearEasing() {
+	    _classCallCheck(this, LinearEasing);
+	  }
+
+	  _createClass(LinearEasing, [{
+	    key: "getValueForProgress",
+	    value: function getValueForProgress(progress) {
+	      return progress;
+	    }
+	  }]);
+
+	  return LinearEasing;
+	}();
+
+	exports.default = LinearEasing;
+
+/***/ },
+/* 58 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1963,7 +2075,7 @@
 	exports.default = CubicEasing;
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports) {
 
 	'use strict';

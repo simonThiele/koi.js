@@ -4,9 +4,6 @@ import {expect} from 'chai';
 import LinearEasing from '../../src/easings/Linear.es6';
 
 describe('easings', () => {
-  beforeEach(() => {
-  });
-
   describe('Linear', () => {
     it('should interpolate linear', () => {
       const easing = new LinearEasing();
