@@ -17,16 +17,16 @@
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "#aaaaaa";
     ctx.fillRect(0, 0, 400, 400);
-    setupAnimation(new LinearEasing());
-    setupAnimation(new QuadraticEasing('in'));
-    setupAnimation(new QuadraticEasing('out'));
-    setupAnimation(new QuadraticEasing('inOut'));
-    setupAnimation(new CubicEasing('in'));
-    setupAnimation(new CubicEasing('out'));
-    setupAnimation(new CubicEasing('inOut'));
+    setupAnimation(new koi.LinearEasing());
+    setupAnimation(new koi.QuadraticEasing('in'));
+    setupAnimation(new koi.QuadraticEasing('out'));
+    setupAnimation(new koi.QuadraticEasing('inOut'));
+    setupAnimation(new koi.CubicEasing('in'));
+    setupAnimation(new koi.CubicEasing('out'));
+    setupAnimation(new koi.CubicEasing('inOut'));
 
     function setupAnimation(easing) {
-      var animation = new Animation({
+      var animation = new koi.Animation({
         from: {x: 0},
         to: {x: 1},
         easing: easing,
