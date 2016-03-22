@@ -7,7 +7,7 @@
     "test": "npm run lint && npm run execute-tests",
     "lint": "eslint src/**",
     "execute-tests": "mocha --compilers js:babel-register --reporter dot $(find test -name '*_test.es6')",
-    "build": "webpack ./src/index.js --out ./build/index.js"
+    "build": "webpack ./src/index.es6 --out ./build/index.js"
   },
   "repository": {
     "type": "git",

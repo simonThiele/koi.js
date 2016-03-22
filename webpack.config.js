@@ -5,7 +5,7 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.es6',
   output: {
     path: path.join(__dirname, 'build/'),
     publicPath: 'build/',
