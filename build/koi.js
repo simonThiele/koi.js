@@ -87,8 +87,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/* eslint-disable no-undef */
-
 	var Animation = exports.Animation = _Animation3.default;
 	var CubicEasing = exports.CubicEasing = _Cubic2.default;
 	var LinearEasing = exports.LinearEasing = _Linear2.default;

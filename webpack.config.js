@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'build/'),
     publicPath: 'build/',
-    filename: 'index.js',
+    filename: 'koi.js',
     chunkFilename: '[id].[hash].js',
     libraryTarget: "umd",
     library: "koi"
