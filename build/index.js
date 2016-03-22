@@ -74,10 +74,12 @@
 
 	/* eslint-disable no-undef */
 
-	window.Animation = _Animation2.default;
-	window.CubicEasing = _Cubic2.default;
-	window.LinearEasing = _Linear2.default;
-	window.QuadraticEasing = _Quadratic2.default;
+	window.koi = {
+	  Animation: _Animation2.default,
+	  CubicEasing: _Cubic2.default,
+	  LinearEasing: _Linear2.default,
+	  QuadraticEasing: _Quadratic2.default
+	};
 
 /***/ },
 /* 2 */
