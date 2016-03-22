@@ -1,5 +1,3 @@
-import intersection from 'lodash/intersection';
-
 import RAFUpdater from './updater/RequestAnimationFrameUpdater';
 import ManualUpdater from './updater/ManualUpdater';
 import LinearEasing from './easings/Linear.es6';
@@ -33,15 +31,19 @@ export default class Animation {
   }
 
   getObjectToInterpolate(from, to) {
-    this.propsToAnimate = intersection(Object.keys(from), Object.keys(to))
-                            .filter(property =>
-                              typeof from[property] === 'number' &&
-                              typeof to[property] === 'number');
+    this.propsToAnimate = this.intersection(Object.keys(from), Object.keys(to))
+                              .filter(property =>
+                                typeof from[property] === 'number' &&
+                                typeof to[property] === 'number');
 
     this.interpolationObject = {};
     this.propsToAnimate.forEach(property => {
       this.interpolationObject[property] = from[property];
     });
+  }
+
+  intersection(a1, a2) {
+    return a1.filter(prop => a2.indexOf(prop) >= 0);
   }
 
   onStart(callback) {
