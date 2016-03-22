@@ -1,6 +1,6 @@
 {
   "name": "koi.js",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A framework for object property interpolation over time",
   "main": "build/index.js",
   "scripts": {

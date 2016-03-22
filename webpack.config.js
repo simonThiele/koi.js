@@ -10,7 +10,12 @@ module.exports = {
     path: path.join(__dirname, 'build/'),
     publicPath: 'build/',
     filename: 'index.js',
-    chunkFilename: '[id].[hash].js'
+    chunkFilename: '[id].[hash].js',
+
+    // export itself to a global var
+    libraryTarget: "var",
+    // name of the global var: "Foo"
+    library: "koi"
   },
   module: {
     loaders: [{

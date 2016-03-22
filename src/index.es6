@@ -1,31 +1,11 @@
 /* eslint-disable no-undef */
 
-import Animation from './Animation.es6';
-import CubicEasing from './easings/Cubic.es6';
-import LinearEasing from './easings/Linear.es6';
-import QuadraticEasing from './easings/Quadratic.es6';
+import _Animation from './Animation.es6';
+import _CubicEasing from './easings/Cubic.es6';
+import _LinearEasing from './easings/Linear.es6';
+import _QuadraticEasing from './easings/Quadratic.es6';
 
-const koi = {
-  Animation,
-  CubicEasing,
-  LinearEasing,
-  QuadraticEasing
-};
-
-window.koi = koi;
-
-// UMD (Universal Module Definition)
-(function(root) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD
-    define([], function() {
-      return koi;
-    });
-  } else if (typeof module !== 'undefined' && typeof exports === 'object') {
-    // Node.js
-    module.exports = koi;
-  } else if (root !== undefined) {
-    // Global variable
-    root.koi = koi;
-  }
-})(this);
+export const Animation = _Animation;
+export const CubicEasing = _CubicEasing;
+export const LinearEasing = _LinearEasing;
+export const QuadraticEasing = _QuadraticEasing;
