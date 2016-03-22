@@ -21,14 +21,11 @@ window.koi = koi;
     define([], function() {
       return koi;
     });
-    console.log('define');
   } else if (typeof module !== 'undefined' && typeof exports === 'object') {
     // Node.js
     module.exports = koi;
-    console.log('module');
   } else if (root !== undefined) {
     // Global variable
     root.koi = koi;
-    console.log('global');
   }
 })(this);

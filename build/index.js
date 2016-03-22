@@ -52,7 +52,9 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /* eslint-disable no-undef */
 
 	var _Animation = __webpack_require__(2);
 
@@ -72,14 +74,30 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/* eslint-disable no-undef */
-
-	window.koi = {
+	var koi = {
 	  Animation: _Animation2.default,
 	  CubicEasing: _Cubic2.default,
 	  LinearEasing: _Linear2.default,
 	  QuadraticEasing: _Quadratic2.default
 	};
+
+	window.koi = koi;
+
+	// UMD (Universal Module Definition)
+	(function (root) {
+	  if (true) {
+	    // AMD
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return koi;
+	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof module !== 'undefined' && (typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+	    // Node.js
+	    module.exports = koi;
+	  } else if (root !== undefined) {
+	    // Global variable
+	    root.koi = koi;
+	  }
+	})(undefined);
 
 /***/ },
 /* 2 */
