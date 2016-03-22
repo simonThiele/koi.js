@@ -1,8 +1,8 @@
 import intersection from 'lodash/intersection';
 
+import RAFUpdater from './updater/RequestAnimationFrameUpdater';
+import ManualUpdater from './updater/ManualUpdater';
 import LinearEasing from './easings/Linear.es6';
-import Time from './Time.es6';
-
 
 const fixedMethod = () => {};
 
@@ -13,13 +13,14 @@ export default class Animation {
     to,
     animationTime = 1000,
     repeating = 0,
-    easing = new LinearEasing() }) {
+    autoUpdate = true,
+    easing = new LinearEasing()}) {
     this.from = from;
     this.to = to;
     this.easing = easing;
     this.repeating = repeating;
     this.animationTime = animationTime;
-    this.time = new Time();
+    this.updater = autoUpdate ? new RAFUpdater(this) : new ManualUpdater(this);
 
     this.getObjectToInterpolate(from, to);
 
@@ -33,8 +34,9 @@ export default class Animation {
 
   getObjectToInterpolate(from, to) {
     this.propsToAnimate = intersection(Object.keys(from), Object.keys(to))
-                            .filter(property => typeof from[property] === 'number' &&
-                                                typeof to[property] === 'number');
+                            .filter(property =>
+                              typeof from[property] === 'number' &&
+                              typeof to[property] === 'number');
 
     this.interpolationObject = {};
     this.propsToAnimate.forEach(property => {
@@ -60,21 +62,15 @@ export default class Animation {
     this.animationInProgress = true;
     this.numRepeatings = 0;
     this.progress = 0;
-    this.time.start();
-
-    this.update(0);
+    this.updater.start();
   }
 
-  update(highResTimestamp) {
+  update(deltaTime) {
     if (!this.animationInProgress) {
       return;
     }
 
-    requestAnimationFrame(this.update);
-
-    this.time.update(highResTimestamp);
-
-    this.progress += this.time.getDeltaTime() * (1000 / this.animationTime); // ms -> s
+    this.progress += (deltaTime / 1000) * (1000 / this.animationTime); // ms -> s
     this.progress = Math.min(this.progress, 1); // [0, 1]
 
     // interpolate between props

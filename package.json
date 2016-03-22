@@ -6,8 +6,8 @@
   "scripts": {
     "test": "npm run lint && npm run execute-tests",
     "lint": "eslint src/**",
-    "execute-tests": "mocha --reporter dot $(find test -name '*_test.es6')",
-    "build": "webpack ./src/index.js --out ./build/index.js"
+    "execute-tests": "mocha --compilers js:babel-register --reporter dot $(find test -name '*_test.es6')",
+    "build": "webpack ./src/index.es6 --out ./build/index.js"
   },
   "repository": {
     "type": "git",
@@ -30,10 +30,10 @@
     "babel-core": "^6.7.0",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.6.0",
+    "babel-register": "^6.7.2",
     "chai": "^3.5.0",
-    "eslint": "^2.3.0",
-    "eslint-config-airbnb": "^6.1.0",
-    "eslint-plugin-react": "^4.2.1",
+    "eslint": "^2.4.0",
+    "eslint-config-google": "^0.4.0",
     "mocha": "^2.4.5",
     "webpack": "^1.12.12"
   },

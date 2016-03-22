@@ -6,20 +6,24 @@
         content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="google" content="notranslate">
 
-  <title>simple repeating</title>
+  <title>simple animation</title>
 </head>
 <body>
   <script src="../build/index.js"></script>
   <script>
     var animation = new Animation({
-      from: {x: 0},
-      to: {x: 1},
-      repeating: 2
+      from: {x: 1, y: 0},
+      to: {x: -1, y: 10},
+      autoUpdate: false
     });
     animation.onStart(progress => console.log('start'));
     animation.onUpdate(progress => console.log(progress));
     animation.onStop(progress => console.log('stop'));
     animation.start();
+
+    setInterval(function() {
+      animation.updater.update(100);
+    }, 100);
   </script>
 </body>
 </html>

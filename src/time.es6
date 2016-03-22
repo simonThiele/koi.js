@@ -13,7 +13,7 @@ export default class Time {
   update(highResTimestamp) {
     this.timeNow = highResTimestamp;
     const deltaTimeInMs = (highResTimestamp - this.timeOfLastFrameUpdate);
-    this.deltaTime = deltaTimeInMs / 1000; // in ms
+    this.deltaTime = deltaTimeInMs;
 
     this.timeOfLastFrameUpdate = highResTimestamp;
   }

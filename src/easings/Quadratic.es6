@@ -16,7 +16,7 @@ export default class QuadraticEasing {
           }
 
           const ptt = pt - 1;
-          return - 0.5 * (ptt * (ptt - 2) - 1);
+          return -0.5 * (ptt * (ptt - 2) - 1);
         };
         break;
       default:
