@@ -147,6 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.getObjectToInterpolate(from, to);
 
 	    // use the fixed method to avoid undefined checking
+	    this.onRepeationCallback = fixedMethod;
 	    this.onUpdateCallback = fixedMethod;
 	    this.onStartCallback = fixedMethod;
 	    this.onStopCallback = fixedMethod;
@@ -191,6 +192,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.onStopCallback = callback;
 	    }
 	  }, {
+	    key: 'onRepeat',
+	    value: function onRepeat(callback) {
+	      this.onRepeationCallback = callback;
+	    }
+	  }, {
 	    key: 'start',
 	    value: function start() {
 	      this.onStartCallback();
@@ -199,6 +205,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.numRepeatings = 0;
 	      this.progress = 0;
 	      this.updater.start();
+	    }
+	  }, {
+	    key: 'setAnimationTime',
+	    value: function setAnimationTime(newAnimationTime) {
+	      this.animationTime = newAnimationTime;
 	    }
 	  }, {
 	    key: 'update',
@@ -221,6 +232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.progress = 0;
 	          this.interpolateObject(0);
 	          this.onUpdateCallback(this.interpolationObject, 0);
+	          this.onRepeationCallback(this.numRepeatings + 1);
 	        }
 	        this.numRepeatings++;
 	      }

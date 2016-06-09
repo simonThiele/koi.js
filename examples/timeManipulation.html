@@ -11,13 +11,22 @@
 <body>
   <script src="../build/koi.js"></script>
   <script>
+    var currentAnimationTime = 100;
+
     var animation = new koi.Animation({
       from: {x: 0},
       to: {x: 1},
-      repeating: 2
+      repeating: 2,
+      animationTime: currentAnimationTime
     });
     animation.onStart(progress => console.log('start'));
-    animation.onUpdate(progress => console.log(progress));
+    animation.onRepeat(cycle => {
+      console.log('start repeation', cycle);
+      currentAnimationTime = currentAnimationTime * 2;
+      animation.setAnimationTime(currentAnimationTime);
+      console.log('doubled animation time on the fly');
+    });
+    animation.onUpdate(progress => console.log(progress.x));
     animation.onStop(progress => console.log('stop'));
     animation.start();
   </script>
