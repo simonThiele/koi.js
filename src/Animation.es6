@@ -23,6 +23,7 @@ export default class Animation {
     this.getObjectToInterpolate(from, to);
 
     // use the fixed method to avoid undefined checking
+    this.onRepeationCallback = fixedMethod;
     this.onUpdateCallback = fixedMethod;
     this.onStartCallback = fixedMethod;
     this.onStopCallback = fixedMethod;
@@ -58,6 +59,10 @@ export default class Animation {
     this.onStopCallback = callback;
   }
 
+  onRepeat(callback) {
+    this.onRepeationCallback = callback;
+  }
+
   start() {
     this.onStartCallback();
 
@@ -65,6 +70,10 @@ export default class Animation {
     this.numRepeatings = 0;
     this.progress = 0;
     this.updater.start();
+  }
+
+  setAnimationTime(newAnimationTime) {
+    this.animationTime = newAnimationTime;
   }
 
   update(deltaTime) {
@@ -86,6 +95,7 @@ export default class Animation {
         this.progress = 0;
         this.interpolateObject(0);
         this.onUpdateCallback(this.interpolationObject, 0);
+        this.onRepeationCallback(this.numRepeatings + 1);
       }
       this.numRepeatings++;
     }
