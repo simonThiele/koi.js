@@ -1,6 +1,6 @@
 {
   "name": "koijs",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A framework for object property interpolation over time",
   "main": "build/koi.js",
   "scripts": {
