@@ -1,5 +1,5 @@
 {
-  "name": "koi.js",
+  "name": "koijs",
   "version": "0.1.0",
   "description": "A framework for object property interpolation over time",
   "main": "build/index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simonThiele/koi.js.git"
+    "url": "git+https://github.com/simonThiele/koijs.git"
   },
   "keywords": [
     "animation",
@@ -22,9 +22,9 @@
   "author": "Simon Thiele simon@instana.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/simonThiele/koi.js/issues"
+    "url": "https://github.com/simonThiele/koijs/issues"
   },
-  "homepage": "https://github.com/simonThiele/koi.js#readme",
+  "homepage": "https://github.com/simonThiele/koijs#readme",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.7.0",
