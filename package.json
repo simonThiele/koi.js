@@ -2,7 +2,7 @@
   "name": "koijs",
   "version": "0.1.2",
   "description": "A framework for object property interpolation over time",
-  "main": "build/index.js",
+  "main": "build/koi.js",
   "scripts": {
     "test": "npm run lint && npm run execute-tests",
     "lint": "eslint src/**",
